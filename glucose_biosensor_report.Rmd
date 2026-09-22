@@ -1,18 +1,22 @@
 ----
-title: "glucose biosensor analysis"
-author: "Nursima Calik"
-output: "html_document"
+Title: "Glucose Biosensor Analysis"
+Author: "Nursima Calik"
+Output: "html_document"
 ----
 ## Introduction
-The data is synthetic glucose biosensor measurements. There are 20 independent electrodes that 10 of them are standart coating
-and 10 of them modified coating. Measurements is occured at 5 mmol/L glucose. the aim is to compare current measurements of 2 type coating. 
+The data is synthetic glucose biosensor measurements. There are 20 independent electrodes that 10 of them are standard coating
+and 10 of them modified coating. Measurements is taken at 5 mmol/L glucose. the aim is to compare current measurements of 2 type of coating. 
 
 ## Upload the data 
+The dataset was uploaded from the data folder using "read.csv" function.
+
 ```{r}
 electrodes <- read.csv("data/simulated_electrodes.csv")
 
 ```
 ## Examine the data
+The dataset was checked for its structure and missing value.
+
 ```{r}
 dim(electrodes)
 head(electrodes)
@@ -23,6 +27,9 @@ anyNA(electrodes)
 ```
 
 ## Visualization
+The box plot and jitter plot were used for visualization. Distribution of values and medians were shown with box plot.
+All values of electrode measurements were marked with jitter. The points were moved slightly along the x axis to prevent overlapping, while their positions on the y axis were not changed. Dot plot was not used because it did not show values clearly.“outlier.shape = NA” was used to hide the additional outlier symbol drawn by the boxplot. 
+
 ```{r}
 library(ggplot2)
 ggplot(data = electrodes, aes(x=coating, y= current_uA)) +
@@ -38,7 +45,25 @@ ggplot(data = electrodes, aes(x=coating, y= current_uA)) +
   theme_minimal()
 
   
-  
-
 ```
+
+## Interpretation
+
+The box for standard group is taller than the box for modified group. This result shows that the middle 50% of measurements of standard group spread in more extensive range. In modified group , the middle 50% of measurements are closer together. However, the modified group also contains some values that are relatively far from the other measurements. But all electrodes should measure similar current value at same concentration. The differences between the measurements may result from variations in electrode production or experimental errors. As a result , it can be said that the middle 50% of measurements are more similar with modified coating but a certain conclusion can not be made without statistical tests.
+
+I used tutorials that are sent and AI to learn the appropriate functions for the code. I had difficulty displaying outlier from box plot and I solved this extra point by hiding. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
