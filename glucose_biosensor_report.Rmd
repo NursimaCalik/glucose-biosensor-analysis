@@ -1,8 +1,8 @@
-----
-Title: "Glucose Biosensor Analysis"
-Author: "Nursima Calik"
-Output: "html_document"
-----
+---
+title: "Glucose Biosensor Analysis"
+author: "Nursima Calik"
+output: "html_document"
+---
 ## Introduction
 The data is synthetic glucose biosensor measurements. There are 20 independent electrodes that 10 of them are standard coating
 and 10 of them modified coating. Measurements is taken at 5 mmol/L glucose. the aim is to compare current measurements of 2 type of coating. 
@@ -28,9 +28,10 @@ anyNA(electrodes)
 
 ## Visualization
 The box plot and jitter plot were used for visualization. Distribution of values and medians were shown with box plot.
-All values of electrode measurements were marked with jitter. The points were moved slightly along the x axis to prevent overlapping, while their positions on the y axis were not changed. Dot plot was not used because it did not show values clearly.“outlier.shape = NA” was used to hide the additional outlier symbol drawn by the boxplot. 
+All values of electrode measurements were marked with jitter. The points were moved slightly along the x axis to prevent overlapping, while their positions on the y axis were not changed. Dot plot was not used because it did not show values clearly.“outlier.shape = NA” was used to hide the additional outlier symbol drawn by the boxplot. Also "factor" was used for reordering.
 
 ```{r}
+electrodes$coating <- factor(electrodes$coating , levels = c("standard", "modified"))
 library(ggplot2)
 ggplot(data = electrodes, aes(x=coating, y= current_uA)) +
   geom_boxplot(outlier.shape = NA) +
@@ -46,12 +47,20 @@ ggplot(data = electrodes, aes(x=coating, y= current_uA)) +
 
   
 ```
+## Calculate Mean and Standard Deviation
+
+```{r}
+aggregate(current_uA ~ coating, data = electrodes, FUN = mean)
+aggregate(current_uA ~ coating, data = electrodes, FUN = sd)
+```
 
 ## Interpretation
 
-The box for standard group is taller than the box for modified group. This result shows that the middle 50% of measurements of standard group spread in more extensive range. In modified group , the middle 50% of measurements are closer together. However, the modified group also contains some values that are relatively far from the other measurements. But all electrodes should measure similar current value at same concentration. The differences between the measurements may result from variations in electrode production or experimental errors. As a result , it can be said that the middle 50% of measurements are more similar with modified coating but a certain conclusion can not be made without statistical tests.
+The box for standard group is taller than the box for modified group. This result shows that the middle 50% of measurements of standard group spread in more extensive range. In modified group , the middle 50% of measurements are closer together. However, the modified group also contains some values that are relatively far from the other measurements. The mean current is 10.757 uA for the modified group and 9.784 uA for the standard group. Therefore, the modified coating has a higher mean current. The standard deviation is 1.687 uA for the modified group and 1.725 uA for the standard group. The standard group has higher standard deviation, but the difference is small. Therefore, the overall variability of the two groups is similar.
 
-I used tutorials that are sent and AI to learn the appropriate functions for the code. I had difficulty displaying outlier from box plot and I solved this extra point by hiding. 
+Different coatings may produce different current values at the same glucose concentration. The differences among measurements within each coating group can result from variations in electrode production or experimental errors. Statistical tests were not performed, but they can help assess the uncertainty of observed differences.
+
+I used tutorials that are sent and AI to learn the appropriate functions for the code. I had difficulty displaying outlier from box plot and I solved this extra point by hiding. For the revisions, I used online tutorials and personal blog posts to learn about "aggregate" and "factor" function . I also checked usage and arguments of these functions in the R Help documentation.
 
 
 
